@@ -15,7 +15,7 @@ namespace ToDoList.Api.Infrastructure.Migrations
                 name: "to_dos",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "uuid_generate_v4()"),
+                    id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     name = table.Column<string>(type: "text", nullable: false),
                     created_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
                 },
@@ -28,7 +28,7 @@ namespace ToDoList.Api.Infrastructure.Migrations
                 name: "to_do_items",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "uuid_generate_v4()"),
+                    id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     created_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     name = table.Column<string>(type: "text", nullable: false),
                     is_complete = table.Column<bool>(type: "boolean", nullable: false),

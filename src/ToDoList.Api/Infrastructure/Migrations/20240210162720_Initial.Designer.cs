@@ -12,7 +12,7 @@ using ToDoList.Api.Infrastructure.EntityFramework;
 namespace ToDoList.Api.Infrastructure.Migrations
 {
     [DbContext(typeof(ToDoDbContext))]
-    [Migration("20240210162100_Initial")]
+    [Migration("20240210162720_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -31,7 +31,7 @@ namespace ToDoList.Api.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("id")
-                        .HasDefaultValueSql("uuid_generate_v4()");
+                        .HasDefaultValueSql("gen_random_uuid()");
 
                     b.Property<DateTimeOffset?>("CompletedAt")
                         .HasColumnType("timestamp with time zone")
@@ -69,7 +69,7 @@ namespace ToDoList.Api.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("id")
-                        .HasDefaultValueSql("uuid_generate_v4()");
+                        .HasDefaultValueSql("gen_random_uuid()");
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp with time zone")

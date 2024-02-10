@@ -16,4 +16,11 @@ public static class Setup
         });
         return builder;
     }
+    
+    public static async Task MigrateDatabaseAsync(this WebApplication app)
+    {
+        await using var scope = app.Services.CreateAsyncScope();
+        await using var dbContext = scope.ServiceProvider.GetRequiredService<ToDoDbContext>();
+        await dbContext.SeedAsync();
+    }
 }
