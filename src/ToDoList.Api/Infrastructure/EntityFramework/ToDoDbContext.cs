@@ -25,7 +25,7 @@ public sealed class ToDoDbContext(DbContextOptions<ToDoDbContext> options) : DbC
             //         p => new { p.Id, p.Name})  // Included properties
             //     .HasIndex(p => p.SearchVector)
             //     .HasMethod("GIN"); // Index method on the search vector (GIN or GIS
-            builder.HasMany(x => x.Items).WithOne().HasForeignKey("todo_list_id");
+            builder.HasMany(x => x.Items).WithOne();
         });
         modelBuilder.Entity<ToDoItem>(builder =>
         {

@@ -1,4 +1,7 @@
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ToDoList.Api.Infrastructure;
+using ToDoList.Api.Infrastructure.EntityFramework;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +38,19 @@ app.MapGet("/weatherforecast", () =>
 })
 .WithName("GetWeatherForecast")
 .WithOpenApi();
+
+app.MapGet("/todos", async (string query, [FromServices]ToDoDbContext db, CancellationToken cancellationToken) =>
+    {
+        var res = await db.ToDos.AsSplitQuery().Where(x => x.SearchVector.Matches(query)).Select(x => new { x.Id, x.Name, x.Items }).ToListAsync(cancellationToken: cancellationToken);
+        if (res is null or {Count: 0})
+        {
+            return Results.NoContent();
+        }
+
+        return Results.Ok(res);
+    })
+    .WithName("SearchToDos")
+    .WithOpenApi();
 
 app.Run();
 

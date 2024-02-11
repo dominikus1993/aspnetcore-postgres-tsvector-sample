@@ -13,7 +13,7 @@ using ToDoList.Api.Infrastructure.EntityFramework;
 namespace ToDoList.Api.Infrastructure.Migrations
 {
     [DbContext(typeof(ToDoDbContext))]
-    [Migration("20240211055725_Initial")]
+    [Migration("20240211055851_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
