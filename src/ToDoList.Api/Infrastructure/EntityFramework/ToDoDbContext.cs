@@ -17,12 +17,14 @@ public sealed class ToDoDbContext(DbContextOptions<ToDoDbContext> options) : DbC
                 .ValueGeneratedOnAdd();
             builder.Property(x => x.Name).IsRequired();
             builder.Property(x => x.CreatedAt).IsRequired();
-            builder.HasGeneratedTsVectorColumn(
-                    p => p.SearchVector,
-                    "english",  // Text search config
-                    p => new { p.Name, p.Id })  // Included properties
-                .HasIndex(p => p.SearchVector)
-                .HasMethod("GIN"); // Index method on the search vector (GIN or GIS
+            builder.Property(p => p.SearchVector).HasComputedColumnSql(
+                "to_tsvector('english', id::text || ' ' || name)", true);
+            // builder.HasGeneratedTsVectorColumn(
+            //         p => p.SearchVector,
+            //         "english",  // Text search config
+            //         p => new { p.Id, p.Name})  // Included properties
+            //     .HasIndex(p => p.SearchVector)
+            //     .HasMethod("GIN"); // Index method on the search vector (GIN or GIS
             builder.HasMany(x => x.Items).WithOne().HasForeignKey("todo_list_id");
         });
         modelBuilder.Entity<ToDoItem>(builder =>

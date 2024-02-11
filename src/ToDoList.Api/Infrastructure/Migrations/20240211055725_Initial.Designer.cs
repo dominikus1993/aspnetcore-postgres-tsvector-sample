@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+using NpgsqlTypes;
 using ToDoList.Api.Infrastructure.EntityFramework;
 
 #nullable disable
@@ -12,7 +13,7 @@ using ToDoList.Api.Infrastructure.EntityFramework;
 namespace ToDoList.Api.Infrastructure.Migrations
 {
     [DbContext(typeof(ToDoDbContext))]
-    [Migration("20240210162720_Initial")]
+    [Migration("20240211055725_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -79,6 +80,13 @@ namespace ToDoList.Api.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("name");
+
+                    b.Property<NpgsqlTsVector>("SearchVector")
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("tsvector")
+                        .HasColumnName("search_vector")
+                        .HasComputedColumnSql("to_tsvector('english', id::text || ' ' || name)", true);
 
                     b.HasKey("Id")
                         .HasName("pk_to_dos");

@@ -83,16 +83,10 @@ namespace ToDoList.Api.Infrastructure.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("tsvector")
                         .HasColumnName("search_vector")
-                        .HasAnnotation("Npgsql:TsVectorConfig", "english")
-                        .HasAnnotation("Npgsql:TsVectorProperties", new[] { "Name", "Id" });
+                        .HasComputedColumnSql("to_tsvector('english', id::text || ' ' || name)", true);
 
                     b.HasKey("Id")
                         .HasName("pk_to_dos");
-
-                    b.HasIndex("SearchVector")
-                        .HasDatabaseName("ix_to_dos_search_vector");
-
-                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("SearchVector"), "GIN");
 
                     b.ToTable("to_dos", (string)null);
                 });
